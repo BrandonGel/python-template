@@ -1,14 +1,14 @@
 # my-package
 
-A modern Python project template with a `src/` layout, tests, linting, type
-checking, and GitHub Actions CI.
+A modern Python project template with tests, linting, type checking, and
+GitHub Actions CI.
 
 ## Using this template
 
 1. On GitHub, click **Use this template** (enable it under
    *Settings → General → Template repository*).
 2. Rename the package:
-   - Rename `src/my_package/` to your package name.
+   - Rename `my_package/` to your package name.
    - Find and replace `my_package` / `my-package` in `pyproject.toml`,
      `tests/`, `README.md`, and `.github/`.
    - Update the author and license details.
@@ -31,7 +31,7 @@ pre-commit install
 
 ## What's included
 
-- `src/` layout packaged with Hatchling
+- Flat package layout packaged with Hatchling
 - pytest + coverage
 - Ruff (lint + format) and strict mypy
 - pre-commit hooks
