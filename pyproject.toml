@@ -29,7 +29,7 @@ dev = [
 my-package = "my_package.cli:main"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/my_package"]
+packages = ["my_package"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -37,11 +37,11 @@ addopts = "-ra --cov=my_package --cov-report=term-missing"
 
 [tool.ruff]
 line-length = 88
-src = ["src", "tests"]
+src = [".", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "SIM"]
 
 [tool.mypy]
 strict = true
-files = ["src"]
+files = ["my_package"]
