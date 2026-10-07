@@ -10,8 +10,10 @@ packages.
 1. On GitHub, click **Use this template** (enable it under
    *Settings → General → Template repository*), then clone your new repo.
 2. Pick a name for your project. It is used for the conda environment, the
-   Python package, and the Poetry project. Letters, digits, `_` and `-` are
-   allowed; `my-project` gives the package `my_project` and the command
+   README, the Python package, and the Poetry project. Letters, digits, `_` and
+   `-` are allowed. The environment and README use the name exactly as typed;
+   the package folder swaps hyphens for underscores, so `my-project` gives the
+   environment `my-project`, the package `my_project`, and the command
    `my-project`.
 
    Linux / macOS:
@@ -24,8 +26,9 @@ packages.
    set ENV_NAME=my_project
    ```
 3. Run the rename script from the repository root. It renames the `my_package/`
-   folder, updates `pyproject.toml`, `environment.yml`, `tests/`, `.github/`
-   and this README, removes this section, and then deletes itself.
+   folder, replaces `my-package` and the `my-project` examples with your name in
+   this README, updates `pyproject.toml`, `environment.yml` and `tests/`,
+   removes this section, and then deletes itself.
 
    Linux / macOS:
    ```bash

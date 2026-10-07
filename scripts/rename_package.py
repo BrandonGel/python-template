@@ -5,13 +5,17 @@ Usage (from the repository root)::
     export ENV_NAME=my_project        # Windows (cmd): set ENV_NAME=my_project
     python3 scripts/rename_package.py
 
-``ENV_NAME`` is used for the conda environment, the Python package, and the
-Poetry project. Hyphens are allowed: ``my-project`` gives the package
-``my_project`` and the command-line tool ``my-project``.
+``ENV_NAME`` is used for the conda environment, the README, the Python package,
+and the Poetry project. The conda environment (``environment.yml``) and the
+README use the name exactly as typed. Python needs underscores, so the package
+folder and import name replace hyphens with underscores, while the
+command-line tool uses hyphens: ``my-project`` gives the environment and README
+name ``my-project``, the package ``my_project``, and the command ``my-project``.
 
 The script renames the package folder, updates every reference to
-``my_package`` / ``my-package``, removes the "Using this template" section from
-the README, and then deletes itself. It uses only the standard library.
+``my_package`` / ``my-package`` (and the ``my_project`` / ``my-project``
+examples in the README), removes the "Using this template" section from the
+README, and then deletes itself. It uses only the standard library.
 """
 
 from __future__ import annotations
@@ -24,6 +28,11 @@ from pathlib import Path
 
 OLD_PACKAGE = "my_package"
 OLD_CLI = "my-package"
+# Placeholder names shown in the README's examples.
+EXAMPLE_NAMES = ("my_project", "my-project")
+# Files that name the project rather than the Python package: they use ENV_NAME
+# exactly as typed, so `conda activate "$ENV_NAME"` works as written.
+ENV_NAME_FILES = {"README.md", "environment.yml"}
 
 ROOT = Path(__file__).resolve().parent.parent
 SKIP_DIRS = {
@@ -50,8 +59,8 @@ def fail(message: str) -> None:
     raise SystemExit(1)
 
 
-def read_name() -> tuple[str, str]:
-    """Return ``(package, cli)`` names derived from ``ENV_NAME``."""
+def read_name() -> tuple[str, str, str]:
+    """Return ``(env, package, cli)`` names derived from ``ENV_NAME``."""
     name = os.environ.get("ENV_NAME", "").strip()
     if not name:
         fail(
@@ -67,7 +76,7 @@ def read_name() -> tuple[str, str]:
     package = name.replace("-", "_")
     if keyword.iskeyword(package):
         fail(f"{package!r} is a Python keyword; choose another name.")
-    return package, name.replace("_", "-")
+    return name, package, name.replace("_", "-")
 
 
 def text_files() -> list[Path]:
@@ -83,7 +92,7 @@ def text_files() -> list[Path]:
 
 
 def main() -> int:
-    package, cli = read_name()
+    env, package, cli = read_name()
 
     old_dir = ROOT / OLD_PACKAGE
     new_dir = ROOT / package
@@ -106,7 +115,11 @@ def main() -> int:
         updated = text
         if path.name == "README.md":
             updated = SETUP_SECTION.sub("", updated)
-        updated = updated.replace(OLD_PACKAGE, package).replace(OLD_CLI, cli)
+        if path.name in ENV_NAME_FILES:
+            for old in (OLD_PACKAGE, OLD_CLI, *EXAMPLE_NAMES):
+                updated = updated.replace(old, env)
+        else:
+            updated = updated.replace(OLD_PACKAGE, package).replace(OLD_CLI, cli)
         if updated != text:
             path.write_text(updated, encoding="utf-8", newline="")
             changed.append(str(path.relative_to(ROOT)))
@@ -127,7 +140,7 @@ def main() -> int:
     print(
         "\nNext steps:\n"
         "  conda env create -f environment.yml\n"
-        f"  conda activate {package}\n"
+        f"  conda activate {env}\n"
         "  poetry install\n"
         "  pre-commit install"
     )
