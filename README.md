@@ -4,15 +4,41 @@ A modern Python project template with tests, linting, type checking, and
 GitHub Actions CI. Conda manages the Python version; Poetry manages the
 packages.
 
+<!-- template-setup:start -->
 ## Using this template
 
 1. On GitHub, click **Use this template** (enable it under
-   *Settings → General → Template repository*).
-2. Rename the package:
-   - Rename `my_package/` to your package name.
-   - Find and replace `my_package` / `my-package` in `pyproject.toml`,
-     `environment.yml`, `tests/`, `README.md`, and `.github/`.
-   - Update the author and license details.
+   *Settings → General → Template repository*), then clone your new repo.
+2. Pick a name for your project. It is used for the conda environment, the
+   Python package, and the Poetry project. Letters, digits, `_` and `-` are
+   allowed; `my-project` gives the package `my_project` and the command
+   `my-project`.
+
+   Linux / macOS:
+   ```bash
+   export ENV_NAME=my_project
+   ```
+
+   Windows (Command Prompt):
+   ```bat
+   set ENV_NAME=my_project
+   ```
+3. Run the rename script from the repository root. It renames the `my_package/`
+   folder, updates `pyproject.toml`, `environment.yml`, `tests/`, `.github/`
+   and this README, removes this section, and then deletes itself.
+
+   Linux / macOS:
+   ```bash
+   python3 scripts/rename_package.py
+   ```
+
+   Windows (Command Prompt):
+   ```bat
+   python scripts\rename_package.py
+   ```
+4. Update the author and license details in `pyproject.toml` and `LICENSE`.
+5. Commit the rename, then continue with the setup below.
+<!-- template-setup:end -->
 
 ## Set your environment name first
 
