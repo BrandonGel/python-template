@@ -95,7 +95,7 @@ conda remove --name %ENV_NAME% --all
 - pytest + coverage
 - Ruff (lint + format) and strict mypy
 - pre-commit hooks
-- GitHub Actions CI (lint + tests on Python 3.10–3.13)
+- GitHub Actions CI using conda + Poetry (lint + tests on Python 3.10–3.13)
 - Dependabot, PR template, and issue templates
 
 ## Resources

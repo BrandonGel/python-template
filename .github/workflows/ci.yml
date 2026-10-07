@@ -9,17 +9,25 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    # Login shell so the activated conda environment is picked up in every step.
+    shell: bash -el {0}
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: pipx install poetry
-      - uses: actions/setup-python@v5
+      - uses: conda-incubator/setup-miniconda@v3
         with:
+          miniforge-version: latest
           python-version: "3.12"
-          cache: poetry
-      - run: poetry install
+          activate-environment: ci
+      - name: Install Poetry and dependencies
+        run: |
+          conda install -y poetry
+          poetry install
       - run: poetry run ruff check .
       - run: poetry run ruff format --check .
       - run: poetry run mypy
@@ -32,10 +40,13 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
-      - run: pipx install poetry
-      - uses: actions/setup-python@v5
+      - uses: conda-incubator/setup-miniconda@v3
         with:
+          miniforge-version: latest
           python-version: ${{ matrix.python-version }}
-          cache: poetry
-      - run: poetry install
+          activate-environment: ci
+      - name: Install Poetry and dependencies
+        run: |
+          conda install -y poetry
+          poetry install
       - run: poetry run pytest
