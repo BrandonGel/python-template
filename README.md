@@ -115,6 +115,35 @@ Windows (Command Prompt):
 conda remove --name %ENV_NAME% --all
 ```
 
+## Keeping up with the template
+
+Repos created from this template get a weekly **Template sync** workflow
+(`.github/workflows/template-sync.yml`, using
+[actions-template-sync](https://github.com/AndreasAugustin/actions-template-sync)).
+When the template changes, it opens a pull request labelled `template_sync` in
+your repo, and nothing changes until you merge it.
+
+One-time setup in each new repo: go to *Settings → Actions → General →
+Workflow permissions* and tick **Allow GitHub Actions to create and approve
+pull requests**. To check for updates right away, open the *Actions* tab, pick
+**Template sync**, and click **Run workflow**.
+
+What gets synced is controlled by `.templatesyncignore` (one git pathspec per
+line). Out of the box your own code, tests, `pyproject.toml`, `poetry.lock`,
+`environment.yml`, `README.md` and `LICENSE` are never touched, so the PRs only
+carry shared tooling such as `.gitignore`, `.pre-commit-config.yaml`,
+Dependabot settings and the issue and PR templates. Add any shared file you have
+customised to `.templatesyncignore`, or the next sync PR will overwrite it.
+
+CI updates are skipped by default, because the built-in `GITHUB_TOKEN` is not
+allowed to change files under `.github/workflows/`. To sync those too, create a
+personal access token with the `workflow` scope, save it as the repo secret
+`TEMPLATE_SYNC_TOKEN`, and remove the `.github/workflows/` line from
+`.templatesyncignore`.
+
+The workflow pulls from `BrandonGel/python-template`. If you copied this
+template under another name, change `source_repo_path` in the workflow file.
+
 ## What's included
 
 - Conda environment (`environment.yml`) with Poetry for dependency management
@@ -123,6 +152,7 @@ conda remove --name %ENV_NAME% --all
 - pre-commit hooks
 - GitHub Actions CI using conda + Poetry (lint + tests on Python 3.10–3.13)
 - Dependabot, PR template, and issue templates
+- Weekly template-sync workflow that opens a PR when the template changes
 
 ## Resources
 

@@ -35,7 +35,9 @@ SKIP_DIRS = {
     ".pytest_cache",
     "scripts",
 }
-SKIP_FILES = {"poetry.lock"}
+# .templatesyncignore must keep naming the template's own my_package/ folder, so
+# template-sync does not re-add the sample code after the package is renamed.
+SKIP_FILES = {"poetry.lock", ".templatesyncignore"}
 NAME_PATTERN = re.compile(r"^[A-Za-z][A-Za-z0-9_-]*$")
 SETUP_SECTION = re.compile(
     r"<!-- template-setup:start -->.*?<!-- template-setup:end -->\n*",

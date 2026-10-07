@@ -1,0 +1,33 @@
+name: Template sync
+
+# Opens a pull request in repos created from BrandonGel/python-template whenever
+# the template changes. See "Keeping up with the template" in the README.
+
+on:
+  schedule:
+    - cron: "17 9 * * 1" # Mondays, 09:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  template-sync:
+    # The template has nothing to sync from, so only run in repos made from it.
+    if: github.repository != 'BrandonGel/python-template'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: AndreasAugustin/actions-template-sync@v2
+        with:
+          source_repo_path: BrandonGel/python-template
+          upstream_branch: main
+          pr_labels: template_sync
+          # The default GITHUB_TOKEN cannot change files under .github/workflows.
+          # To sync those too, add a PAT with the `workflow` scope as the secret
+          # TEMPLATE_SYNC_TOKEN and remove `.github/workflows/` from
+          # .templatesyncignore.
+          target_gh_token: ${{ secrets.TEMPLATE_SYNC_TOKEN || github.token }}

@@ -1,0 +1,20 @@
+# Files listed here are never changed by template-sync pull requests.
+# One git pathspec per line (folders and globs work); '#' starts a comment.
+# This file belongs to your repo: template updates to it are not applied.
+
+# Your project: code, tests, packaging, and docs.
+# (my_package/ is listed so the template's sample code is not re-added after
+# you rename the package.)
+my_package/
+tests/
+scripts/
+pyproject.toml
+poetry.lock
+environment.yml
+README.md
+LICENSE
+
+# Workflow files: the default GITHUB_TOKEN is not allowed to change these.
+# Remove this line after adding a PAT with the `workflow` scope as the
+# TEMPLATE_SYNC_TOKEN secret, to also receive CI updates.
+.github/workflows/
